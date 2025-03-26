@@ -43,16 +43,17 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault(); // Prevent any default action from button
         console.log("Submit button clicked");
 
-        if (validateForm()) {
-            // Trigger SalesNexus submission via its own logic
-            callbackFuncForm2(event); // Call SalesNexus function directly
-            sendToWebhook().then(() => {
-                const thankyouPage = document.getElementById("thankyouPage").value;
-                console.log("Redirecting to:", thankyouPage);
-                window.open(thankyouPage, "_blank");
-                location.reload(); 
-            });
-        }
+		if (validateForm()) {
+			const thankyouPage = document.getElementById("thankyouPage").value;
+			console.log("Opening new tab:", thankyouPage);
+			window.open(thankyouPage, "_blank"); // Open immediately on click
+
+			callbackFuncForm2(event); // SalesNexus submission
+			sendToWebhook().then(() => {
+				console.log("Webhook complete, reloading page");
+				location.reload(); // Reload after webhook
+			});
+		}
     });
 
     // Form validation function
